@@ -13,18 +13,18 @@ const openai = new OpenAI({
 });
 
 async function assistant() {
-    const payload = {
-        messages: chat,
-        model: 'gpt-3.5-turbo',
-        functions: functions
-    };
-    //@ts-expect-error-uuugh..
-    const completion = await openai.chat.completions.create(payload)
-    console.log(JSON.stringify(payload, null, 2));
-    completion.choices.map((choice: any) => {
-        console.log(choice.message.function_call);
-    }
-    );
+  const payload = {
+      messages: chat,
+      model: 'gpt-4',
+      functions: functions
+  };
+  //@ts-expect-error
+  const completion = await openai.chat.completions.create(payload);
+  
+  completion.choices.forEach((choice) => {
+    console.log(JSON.stringify(choice, null, 2));
+  }
+  );
 }
 
 app.get('/', (req, res) => {

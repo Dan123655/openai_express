@@ -1,10 +1,10 @@
 # Query Search and Filtered Search App
 
-This applications assists
+You proompt, app assists
 
 ## Features
 
-- Uses OpenAI GPT-3.5 Turbo or better one to understand and process user queries.
+- Uses OpenAI to understand and process user queries.
 - Fetches locations based on category & attribute IDs.
 - Provides a user-friendly interface to get relevant results based on user input.
 
@@ -34,20 +34,65 @@ This applications assists
 
 Once the app is running, navigate to [localhost](http://localhost:8000) in your browser.
 
-## Returns params & greetings
+## Tuning
+
+Describe functions you need arguments for:
 
 ```
-Function Name: get_places
-Arguments: {
-  "categories": [
-    10696
-  ],
-  "attributes": [
-    100,
-    102
-  ],
-  "response": "Sure, let me find a barrier-free cafe where you can go with your dog."
-}
+[
+    {
+        "name": "get_places",
+        "parameters": {
+            "type": "object",
+            "description": "only called if relevant categories/attributes are available. separate arrays",   
+            "properties": {
+                "categories": {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    },
+                    "description": "should always match: monuments (10900) gastronomy (10696) culture (10697) events (10695)"
+                },
+                "attributes": {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    },
+                    "description": "only with category. should always match: barrier-free (101) pet-friendly (102) free-entry (103)"
+                },
+                "query": {
+                    "type": "string",
+                    "description": "place name if obvious"
+                },
+                "response": {
+                    "type": "string",
+                    "description": "annouce your searching, friendly msg, else apologize"
+                },
+                "fallback": {
+                    "type": "object",
+                        "description": "fallback message, brief. Sorry, but I am having trouble finding it. Maybe you will be interested in ...",
+                        "fallback": {
+                            "type": "boolean",
+                            "description": "false if trouble finding, else true"
+                        },
+      
+                },
+            },
+            "required": ["response"]
+        },
+    },
+];
+```
+Include updated chat for context:
+
+```
+    { role: 'system', content: 'your are phone app, assist with search, always in users language, but ONLY IF MATCHES available categories, else apology, brief, available options.' },
+    { role: 'user', content: 'nejaka dobra restaurace' },
+    { role: 'assistant', content: 'Hledám pro vás nějakou dobrou restauraci...' },
+    //results: "categories": [10696],
+    { role: 'user', content: 'do ktere muzu s kocourem na voziku?' },
+    { role: 'assistant', content: 'Hledám pro vás restauraci, která je bezbariérová a přijímá domácí mazlíčky...' },
+    //results: categories": [10696], "attributes": [101, 102]
 ```
 
 ## License

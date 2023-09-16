@@ -1,9 +1,9 @@
 export const functions = [
     {
-        "name": "get_places",
+        "name": "_get_search",
         "parameters": {
             "type": "object",
-            "description": "only called if relevant categories/attributes are available. separate arrays",   
+            "description": "only called if relevant categories/attributes are available. separate arrays",
             "properties": {
                 "categories": {
                     "type": "array",
@@ -25,22 +25,32 @@ export const functions = [
                 },
                 "response": {
                     "type": "string",
-                    "description": "annouce your searching, friendly msg, else apologize"
-                },
-                "fallback": {
-                    "type": "object",
-                        "description": "fallback message, brief. Sorry, but I am having trouble finding it. Maybe you will be interested in ...",
-                        "fallback": {
-                            "type": "boolean",
-                            "description": "false if trouble finding, else true"
-                        },
-      
+                    "description": "annouce your searching, friendly msg, else apologize, propose one search category"
                 },
             },
             "required": ["response"]
         },
     },
+    {
+        "name": "_fallback",
+        "parameters": {
+            "type": "object",
+            "description": "only called if no relevant categories/attributes are available",
+            "properties": {
+                "response": {
+                    "type": "string",
+                    "description": "apologize, brief, propose one search category"
+                },
+                "fallback": {
+                    "type": "boolean",
+                    "description": "true if no relevant categories/attributes are available"
+                },
+            },
+            "reqired": ["fallback", "response"]
+
+        },
+    },
 ];
 export const chat = [
-    { role: 'system', content: 'your are phone app, assist with search, always in users language, but ONLY IF MATCHES available categories, else apology, brief, available options.' },
+    { role: 'system', content: 'your are phone app, assist with search, always in users language, but ONLY IF MATCHES available categories, else apology, brief, propose one available category option. Responde sarcastically joking' },
 ];

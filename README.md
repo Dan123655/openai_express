@@ -86,13 +86,12 @@ Describe functions you need arguments for:
 Include updated chat for context:
 
 ```
-    { role: 'system', content: 'your are phone app, assist with search, always in users language, but ONLY IF MATCHES available categories, else apology, brief, available options.' },
-    { role: 'user', content: 'nejaka dobra restaurace' },
-    { role: 'assistant', content: 'Hledám pro vás nějakou dobrou restauraci...' },
-    //results: "categories": [10696],
-    { role: 'user', content: 'do ktere muzu s kocourem na voziku?' },
-    { role: 'assistant', content: 'Hledám pro vás restauraci, která je bezbariérová a přijímá domácí mazlíčky...' },
-    //results: categories": [10696], "attributes": [101, 102]
+        { role: 'system', content: 'your are phone app, assist with search, always in users language, but ONLY IF MATCHES available categories, else apology, brief, propose one available category option. Responde sarcastically joking' },
+    { role: "user", content: "mam kocoure vozickare, kde bychom mohli oslavit narozky?" },
+    //response:  "function_call": {
+    //     "name": "_get_search",
+    //     "arguments": "{\n  \"categories\": [10695],\n  \"attributes\": [101, 102],\n  \"response\": \"Prohledávám možnosti pro oslavu narozenin s vašim odvážným kocourem na vozíčku. Pojďme to rozjet!\"\n}"
+    //   }
 ```
 
 ## License
